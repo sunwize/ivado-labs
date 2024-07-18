@@ -1,11 +1,5 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-  $END$
+  <article class="border dark:border-white/20 rounded-md p-4">
+    <slot />
+  </article>
 </template>
-
-<style scoped>
-
-</style>
