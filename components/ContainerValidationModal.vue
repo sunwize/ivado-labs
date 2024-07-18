@@ -38,7 +38,7 @@ const onConfirm = () => {
         color="primary"
         variant="outline"
         title="Medical Content Detected"
-        description="This container may contain medical contents."
+        description="This container may contain medical content."
         class="mb-4"
       >
         <template #icon>
