@@ -105,6 +105,8 @@ const filteredContainers = computed(() => {
   });
 });
 
+const verifiedContainers = computed(() => containers.value.filter(container => container.verified));
+
 const formatDate = (date: string) => {
   return format(new Date(date), "d MMM, yyyy");
 };
@@ -169,12 +171,18 @@ const onPrioritySubmitted = (priority: Priority) => {
           v-model="search"
           placeholder="Filter containers..."
         />
-        <UBadge
-          color="red"
-          variant="outline"
-        >
-          208 high priority containers
-        </UBadge>
+        <div class="flex items-center gap-2">
+          <UBadge variant="outline">
+            <PhCircleWavyCheckFill />
+            <span class="ml-1">{{ verifiedContainers.length }} verified containers</span>
+          </UBadge>
+          <UBadge
+            color="red"
+            variant="outline"
+          >
+            208 high priority containers
+          </UBadge>
+        </div>
       </div>
       <UTable
         :rows="filteredContainers"
