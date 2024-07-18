@@ -33,7 +33,7 @@ const navLinks = [
       >
         <ULink
           :to="link.path"
-          class="flex items-center gap-2 font-medium rounded-md hover:bg-gray-100 dark:hover:bg-white/10 border border-transparent px-3 py-2"
+          class="flex items-center gap-2 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 border border-transparent px-3 py-2"
           active-class="!border-primary-500/50 !bg-primary-400/50 opacity-100"
         >
           <component :is="link.icon" class="w-5 h-5" />
