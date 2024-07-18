@@ -55,9 +55,9 @@ const columns = [
   },
 ];
 const search = ref("");
-const priorityEditor = reactive({
+const priorityEditor = reactive<{ visible: boolean; container: Container | null; }>({
   visible: false,
-  priority: Priority.Low,
+  container: null,
 });
 const containerValidationModal = reactive<{ visible: boolean; container: Container | null; }>({
   visible: false,
@@ -109,8 +109,8 @@ const formatDate = (date: string) => {
   return format(new Date(date), "d MMM, yyyy");
 };
 
-const openPriorityEditor = (priority: Priority) => {
-  priorityEditor.priority = priority;
+const openPriorityEditor = (container: Container) => {
+  priorityEditor.container = container;
   priorityEditor.visible = true;
 };
 
@@ -124,6 +124,13 @@ const onContainerVerified = () => {
     containerValidationModal.container.verified = true;
   }
   containerValidationModal.visible = false;
+};
+
+const onPrioritySubmitted = (priority: Priority) => {
+  if (priorityEditor.container) {
+    priorityEditor.container.priority = priority;
+  }
+  priorityEditor.visible = false;
 };
 </script>
 
@@ -205,7 +212,7 @@ const onContainerVerified = () => {
           <div class="flex items-center gap-2">
             <UButton
               color="white"
-              @click="openPriorityEditor(row.priority)"
+              @click="openPriorityEditor(row)"
             >
               Change Priority
             </UButton>
@@ -230,7 +237,8 @@ const onContainerVerified = () => {
     </div>
     <PriorityEditorModal
       v-model="priorityEditor.visible"
-      v-model:priority="priorityEditor.priority"
+      :priority="priorityEditor.container?.priority"
+      @submit="onPrioritySubmitted"
     />
     <ContainerValidationModal
       v-model="containerValidationModal.visible"

@@ -2,6 +2,12 @@
 import { Priority } from "~/types/containers";
 import PhX from "~icons/ph/x";
 
+type Emits = {
+    (event: "submit", value: Priority): void;
+}
+
+const emits = defineEmits<Emits>();
+
 const modelValue = defineModel<boolean>({ default: false });
 const priority = defineModel<Priority>("priority", { default: Priority.Low });
 
@@ -19,6 +25,11 @@ const priorityOptions = [
     value: Priority.High,
   },
 ];
+
+const onSubmit = () => {
+  modelValue.value = false;
+  emits("submit", priority.value);
+};
 </script>
 
 <template>
@@ -51,7 +62,7 @@ const priorityOptions = [
           >
             Cancel
           </UButton>
-          <UButton @click="modelValue = false">
+          <UButton @click="onSubmit()">
             Submit
           </UButton>
         </div>
