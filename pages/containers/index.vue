@@ -212,7 +212,7 @@ const onPrioritySubmitted = (priority: Priority) => {
         <template #verified-data="{ row }: { row: Container }">
           <PhCircleWavyCheckFill
             v-if="row.verified"
-            class="text-primary-400 w-5 h-5"
+            class="text-primary-400 w-6 h-6"
           />
           <p v-else />
         </template>

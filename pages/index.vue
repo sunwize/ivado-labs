@@ -116,7 +116,7 @@ const generateTruckTraffic = () => {
           </Card>
         </div>
         <div class="grid grid-cols-12">
-          <Card class="col-span-4">
+          <Card class="col-span-6">
             <div class="flex justify-between">
               <p class="text-lg font-medium mb-4">
                 Priority containers by supply type
