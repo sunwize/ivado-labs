@@ -55,6 +55,7 @@ const columns = [
   },
 ];
 const search = ref("");
+const hideVerified = ref(false);
 const priorityEditor = reactive<{ visible: boolean; container: Container | null; }>({
   visible: false,
   container: null,
@@ -90,12 +91,12 @@ const analyticsIcons = {
 };
 
 const filteredContainers = computed(() => {
-  if (!search.value) {
-    return containers.value;
-  }
-
   const s = search.value.toLowerCase();
   return containers.value.filter((container) => {
+    if (container.verified && hideVerified.value) {
+      return false;
+    }
+
     const priority = priorityLabels[container.priority].toLowerCase();
     const status = statusLabels[container.status].toLowerCase();
     return priority.includes(s) || status.includes(s) ||
@@ -167,18 +168,38 @@ const onPrioritySubmitted = (priority: Priority) => {
         </Card>
       </div>
       <div class="flex items-stretch justify-between gap-2 border dark:border-white/20 rounded-t-md p-4">
-        <UInput
-          v-model="search"
-          placeholder="Filter containers..."
-        />
         <div class="flex items-center gap-2">
-          <UBadge variant="outline">
+          <UInput
+            v-model="search"
+            placeholder="Filter containers..."
+          />
+          <UButton
+            :color="hideVerified ? 'primary' : 'white'"
+            :variant="hideVerified ? 'outline' : 'solid'"
+            @click="hideVerified = !hideVerified"
+          >
+            <UCheckbox
+              v-model="hideVerified"
+              class="pointer-events-none"
+            >
+              <template #label>
+                <span class="-ml-1">Hide verified</span>
+              </template>
+            </UCheckbox>
+          </UButton>
+        </div>
+        <div class="flex items-center gap-2">
+          <UBadge
+            variant="soft"
+            size="lg"
+          >
             <PhCircleWavyCheckFill />
             <span class="ml-1">{{ verifiedContainers.length }} verified containers</span>
           </UBadge>
           <UBadge
             color="red"
-            variant="outline"
+            variant="soft"
+            size="lg"
           >
             208 high priority containers
           </UBadge>
@@ -212,7 +233,7 @@ const onPrioritySubmitted = (priority: Priority) => {
         <template #verified-data="{ row }: { row: Container }">
           <PhCircleWavyCheckFill
             v-if="row.verified"
-            class="text-primary-400 w-6 h-6"
+            class="text-primary-500 w-6 h-6"
           />
           <p v-else />
         </template>
