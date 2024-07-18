@@ -49,7 +49,7 @@ const generateAlgorithmPerformance = () => {
 
   return [
     {
-      name: "AI detected high priority containers",
+      name: "High priority containers detected",
       data: containersPerDay,
     },
     {
