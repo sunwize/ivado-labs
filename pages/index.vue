@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { add, format, sub } from "date-fns";
+import { add, format } from "date-fns";
 
 const generateArrivals = () => {
   const dataSample = [8421, 12802, 6234, 7321, 8543, 5463, 11382, 9382, 12342, 8234];
@@ -30,31 +30,17 @@ const generateArrivals = () => {
 };
 
 const generateAlgorithmPerformance = () => {
-  const dataSample = [1252, 1211, 1633, 1867, 1528, 1939, 1732, 1111, 1234, 1435];
-  const falsePositives = [22, 13, 31, 22, 14, 26, 38, 31, 28, 19];
-  const containersPerDay = new Array(10)
+  const data = [88, 89, 83, 90, 88, 92, 90, 94, 95, 92];
+  const priorityArrivalsByDay = new Array(10)
     .fill(0)
     .map((_, index) => ({
-      x: format(sub(new Date(), { days: index }), "E, dd MMM"),
-      y: dataSample[index],
-    }))
-    .reverse();
-  const falsePositivesPerDay = new Array(10)
-    .fill(0)
-    .map((_, index) => ({
-      x: "False positives",
-      y: falsePositives[index],
-    }))
-    .reverse();
-
+      x: add(new Date("2024-07-20"), { days: index }).getTime(),
+      y: data[index],
+    }));
   return [
     {
-      name: "High priority containers detected",
-      data: containersPerDay,
-    },
-    {
-      name: "False positives",
-      data: falsePositivesPerDay,
+      name: "Success rate %",
+      data: priorityArrivalsByDay,
     },
   ];
 };
@@ -107,21 +93,32 @@ const generateTruckTraffic = () => {
           <Card class="col-span-6">
             <div class="flex justify-between">
               <p class="text-lg font-medium mb-4">
-                Algorithm false positives
+                Container detection success rate %
               </p>
               <DateRangerPicker />
             </div>
             <ApexChart
               :options="{
                 chart: {
-                  type: 'bar',
-                  stacked: true,
+                  type: 'area',
                 },
                 series: generateAlgorithmPerformance(),
-                colors: ['#22C55E', '#ed4343'],
+                colors: ['#a754f5'],
                 dataLabels: {
                   enabled: false
                 },
+                stroke: {
+                  curve: 'smooth'
+                },
+                xaxis: {
+                  type: 'datetime'
+                },
+                yaxis: [
+                  {
+                    min: 0,
+                    max: 100
+                  }
+                ]
               }"
             />
           </Card>
